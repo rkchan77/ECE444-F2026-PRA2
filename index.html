@@ -20,6 +20,16 @@
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
   <!-- Custom Styles-->
   <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- Apply the saved theme before first paint so dark mode doesn't flash white -->
+  <script>
+    (function () {
+      var theme = null;
+      try { theme = localStorage.getItem('theme'); } catch (e) {}
+      if (theme === 'dark' || (theme === null && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
   <title>Ryan Chan | Software Engineer</title>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -200,6 +210,11 @@
       </li>
     </ul>
   </nav>
+
+  <!-- Dark mode toggle -->
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <i class="fa fa-moon-o"></i>
+  </button>
 
   <!-- Main Content-->
   <main>
@@ -761,6 +776,28 @@
         }
       });
     });
+  </script>
+
+  <!-- Dark mode toggle -->
+  <script type="text/javascript">
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const icon = btn.querySelector('i');
+
+      function syncIcon() {
+        // Show the sun in dark mode (click to go light), the moon in light mode
+        icon.className = root.classList.contains('dark') ? 'fa fa-sun-o' : 'fa fa-moon-o';
+      }
+
+      btn.addEventListener('click', function () {
+        root.classList.toggle('dark');
+        try { localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light'); } catch (e) {}
+        syncIcon();
+      });
+
+      syncIcon();
+    })();
   </script>
 
   <!-- typed.js -->
